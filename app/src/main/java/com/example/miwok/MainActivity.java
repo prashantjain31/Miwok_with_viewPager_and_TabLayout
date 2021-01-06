@@ -1,11 +1,14 @@
 package com.example.miwok;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,50 +17,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Find the views that shows the numbers category
-        TextView numbers = (TextView) findViewById(R.id.numbers);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        //set a clicklistener on that view
-        numbers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, NumbersActivity.class);
-                startActivity(i);
-            }
-        });
+        // Create an adapter that knows which fragment should be shown on each page
+        CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
 
-        TextView family = (TextView) findViewById(R.id.family);
+        // Set the adapter onto the view pager
+        viewPager.setAdapter(adapter);
 
-        //set a clicklistener on that view
-        family.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, FamilyActivity.class);
-                startActivity(i);
-            }
-        });
+        // Find the tab layout that shows the tabs
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        TextView colors = (TextView) findViewById(R.id.colors);
-
-        //set a clicklistener on that view
-        colors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, ColorsActivity.class);
-                startActivity(i);
-            }
-        });
-
-        TextView phrases = (TextView) findViewById(R.id.phrases);
-
-        //set a clicklistener on that view
-        phrases.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, PhrasesActivity.class);
-                startActivity(i);
-            }
-        });
+        // Connect the tab layout with the view pager. This will
+        //   1. Update the tab layout when the view pager is swiped
+        //   2. Update the view pager when a tab is selected
+        //   3. Set the tab layout's tab names with the view pager's adapter's titles
+        //      by calling onPageTitle()
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 }
